@@ -10,5 +10,8 @@
             "name": "Nir Yariv",
             "email": "nir@dofinity.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {"Wapi\\": "src/Wapi"}
+    }
 }

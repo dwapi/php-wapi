@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2501560939d6a6c4a31489bdc723a865",
-    "content-hash": "b92ce933ca0b1f69618a2f0fb5d17b43",
+    "hash": "ef2d4a7471752d17e459118da3686f1e",
+    "content-hash": "7988be84319bc290decdd8d597d6acd1",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -586,55 +586,6 @@
                 "writable"
             ],
             "time": "2017-03-26 18:02:15"
-        },
-        {
-            "name": "samejack/php-argv",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/samejack/php-argv.git",
-                "reference": "7d7ce02951d68ef4112332f20458e9d10f913ddc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/samejack/php-argv/zipball/7d7ce02951d68ef4112332f20458e9d10f913ddc",
-                "reference": "7d7ce02951d68ef4112332f20458e9d10f913ddc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "php": ">=5.3.0",
-                "phpunit/phpunit": "3.7.*@stable",
-                "satooshi/php-coveralls": "dev-master",
-                "squizlabs/php_codesniffer": "1.4.*@stable"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "samejack\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "SJ",
-                    "email": "sj@toright.com",
-                    "homepage": "http://blog.toright.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP CLI arguments parse.",
-            "homepage": "https://github.com/samejack/php-argv",
-            "keywords": [
-                "cli",
-                "php"
-            ],
-            "time": "2016-04-13 13:46:37"
         },
         {
             "name": "symfony/http-foundation",
