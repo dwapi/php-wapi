@@ -3,6 +3,7 @@ namespace Wapi;
 
 use GuzzleHttp\Psr7\Request;
 use Ratchet\ConnectionInterface;
+use Wapi\Protocol\Protocol;
 
 class Client {
   
@@ -56,7 +57,7 @@ class Client {
   
   public function send($data) {
     try {
-      $this->getConn()->send(json_encode($data));
+      $this->getConn()->send(Protocol::encode($data));
     } catch (\Exception $e) {
       
     }

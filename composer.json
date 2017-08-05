@@ -2,7 +2,8 @@
     "name": "nyariv/wapi",
     "description": "A PHP daemon factory for handling websocket communication based on ReactPHP and Ratchet.",
     "require": {
-        "cboden/ratchet": "0.4.x-dev"
+        "cboden/ratchet": "0.4.x-dev",
+        "nyariv/wapi-protocol": "dev-master"
     },
     "license": "MIT",
     "authors": [

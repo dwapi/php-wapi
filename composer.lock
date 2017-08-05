@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ef2d4a7471752d17e459118da3686f1e",
-    "content-hash": "7988be84319bc290decdd8d597d6acd1",
+    "hash": "eacf958b7d82ce967641fd9d4485eaed",
+    "content-hash": "4b8139a830a810626ac94841c06cbefb",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -175,6 +175,39 @@
                 "url"
             ],
             "time": "2017-03-20 17:10:46"
+        },
+        {
+            "name": "nyariv/wapi-protocol",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dwapi/php-wapi-protocol.git",
+                "reference": "3176fa5e6faf97cb93ca48e09cfe437356b9f128"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dwapi/php-wapi-protocol/zipball/3176fa5e6faf97cb93ca48e09cfe437356b9f128",
+                "reference": "3176fa5e6faf97cb93ca48e09cfe437356b9f128",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wapi\\Protocol\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nir Yariv",
+                    "email": "nir@dofinity.com"
+                }
+            ],
+            "description": "WAPI messaging protocol.",
+            "time": "2017-08-05 18:02:35"
         },
         {
             "name": "psr/http-message",
@@ -782,7 +815,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cboden/ratchet": 20
+        "cboden/ratchet": 20,
+        "nyariv/wapi-protocol": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

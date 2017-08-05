@@ -1,13 +1,18 @@
 <?php
 namespace Wapi;
 
-use Drupal\Component\Serialization\Json;
 use Wapi\Exception\MessageInvalid;
 use Wapi\Exception\WapiException;
+use Wapi\Protocol\Protocol;
 
 class Message {
   
   const CLOCK_DEVIATION_THRESHOLD = 15;
+  
+  /**
+   * @var array
+   */
+  public $original_message;
   
   /**
    * @var string
@@ -50,7 +55,7 @@ class Message {
   public $receive_time;
   
   public function __construct(Client $client, $msg, $receive_time = NULL) {
-    $body = json_decode($msg, TRUE);
+    $this->original_message = $body = Protocol::decode($msg);
     
     if(!$body || empty($body['message_id'])) {
       throw new MessageInvalid();
@@ -69,23 +74,11 @@ class Message {
   }
   
   public function verifyCheck($secret) {
-    if(!$this->check) {
-      return FALSE;
-    }
-    $time_check = $this->verifyTimestamp();
-    return $time_check && ($this->calculateCheck($secret) == $this->check);
+    return $this->verifyTimestamp() && Protocol::verifyMessage($secret, $this->original_message);
   }
   
   public function verifyTimestamp() {
-    if(!$this->timestamp) {
-      return FALSE;
-    }
-    return abs($this->timestamp - $this->receive_time) <= static::CLOCK_DEVIATION_THRESHOLD;
-  }
-  
-  public function calculateCheck($secret) {
-    $secret = $secret ?: ServiceManager::service('app')->server_secret;
-    return static::sign("$secret:$this->timestamp:$this->message_id:$this->method:", $this->data);
+    return Protocol::verifyClock($this->original_message,static::CLOCK_DEVIATION_THRESHOLD);
   }
   
   public function reply($data = NULL, WapiException $error = NULL) {
@@ -104,6 +97,6 @@ class Message {
   }
   
   static function sign($secret, $body) {
-    return base64_encode(hash("sha256",$secret . json_encode($body), TRUE));
+    return Protocol::sign($secret, Protocol::encode($body));
   }
 }
