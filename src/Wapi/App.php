@@ -20,16 +20,12 @@ abstract class App implements MessageComponentInterface, AppInterface {
   /** @var \Wapi\ClientManager */
   public $client_manager;
   
-  /**
-   * @var LoopInterface
-   */
-  public $loop;
-  
-  public function __construct($daemon_id, $server_secret) {
+  public function __construct(LoopInterface $loop, $daemon_id, $server_secret) {
     $this->daemon_id = $daemon_id;
     $this->server_secret = $server_secret;
     $this->start_time = microtime(TRUE);
     ServiceManager::service('app', $this);
+    ServiceManager::service('loop', $loop);
   }
   
   public function init() {

@@ -33,14 +33,15 @@ class Daemon {
     if ($error_log_file) {
       ErrorHandler::init($error_log_file);
     }
+  
+    $loop = Factory::create();
     
     $wsStack = new HttpServer(
       new WsServer(
-        $this->app = new $app_class_name($id, $server_secret)
+        $this->app = new $app_class_name($loop, $id, $server_secret)
       )
     );
-  
-    $loop = Factory::create();
+    
     $ws = new Server("$host:$port", $loop);
     $this->wsApp = new IoServer($wsStack, $ws, $loop);
     

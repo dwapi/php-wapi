@@ -27,7 +27,7 @@ abstract class MessageHandlerBase implements MessageHandlerInterface {
       $methods = static::getMethods();
       try {
         if (!empty($methods[$method]) && method_exists($this, $methods[$method])) {
-          $result = call_user_func([$this, $methods[$method]]);
+          $result = call_user_func([$this, $methods[$method]], $this->message->data);
           if($result instanceof Promise) {
             $result->then(function($result){
               $this->message->reply($result);
