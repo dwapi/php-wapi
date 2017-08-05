@@ -10,8 +10,8 @@ class ServiceManager {
   
   /**
    * @param string $name
-   * @param null|object $set
-   * @return object|null
+   * @param null|mixed $set
+   * @return null|mixed
    */
   static function service($name, $set = NULL) {
     if(isset($set)) {
