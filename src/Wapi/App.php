@@ -41,12 +41,14 @@ abstract class App implements MessageComponentInterface, AppInterface {
   }
   
   public function onOpen(ConnectionInterface $conn) {
+    /** @var LoopInterface $loop */
+    $loop = ServiceManager::service('loop');
     /** @var \GuzzleHttp\Psr7\Request */
     $request = $conn->httpRequest;
     $client = new Client($conn, $request);
     $client_manager =  $this->client_manager;
     $client_manager->clientAdd($client);
-    $this->loop->addTimer(2, function() use ($client, $client_manager){
+    $loop->addTimer(2, function() use ($client, $client_manager){
       if(empty($client->persist)) {
         $client_manager->clientRemove($client);
       }

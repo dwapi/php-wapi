@@ -7,6 +7,7 @@ use Wapi\Exception\MethodNotFound;
 use Wapi\Exception\WapiException;
 use Wapi\Message;
 use React\Promise\Promise;
+use Wapi\ServiceManager;
 
 abstract class MessageHandlerBase implements MessageHandlerInterface {
   
@@ -44,7 +45,8 @@ abstract class MessageHandlerBase implements MessageHandlerInterface {
         $this->message->reply(NULL, $exception);
       }
     } catch (WapiException $exception) {
-      $client_manager = ClientManager::getInstance();
+      /** @var ClientManager $client_manager */
+      $client_manager = ServiceManager::service('client_manager');
       $this->message->reply(NULL, $exception);
       $client_manager->clientRemove($this->message->client);
     }
