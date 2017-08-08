@@ -53,11 +53,10 @@ class ErrorHandler {
   /**
    * Error handler, passes flow over the exception logger with new ErrorException.
    */
-  public function logError( $err_severity, $err_msg, $err_file, $err_line, $context = null )
+  public static function logError( $err_severity, $err_msg, $err_file, $err_line, $context = null )
   {
     try {
-      switch($err_severity)
-      {
+      switch ($err_severity) {
         case E_ERROR:               throw new Error            ($err_msg, 0, $err_severity, $err_file, $err_line);
         case E_WARNING:             throw new Warning          ($err_msg, 0, $err_severity, $err_file, $err_line);
         case E_PARSE:               throw new Parse            ($err_msg, 0, $err_severity, $err_file, $err_line);
@@ -74,23 +73,32 @@ class ErrorHandler {
         case E_DEPRECATED:          throw new Deprecated       ($err_msg, 0, $err_severity, $err_file, $err_line);
         case E_USER_DEPRECATED:     throw new UserDeprecated   ($err_msg, 0, $err_severity, $err_file, $err_line);
       }
-    } catch (\ErrorException $e ) {
-      $this->logException($e);
+    } catch (\ErrorException $e) {
+      static::logException($e);
     }
   }
 
   /**
    * Uncaught exception handler.
    */
-  public function logException( \Exception $e )
+  static function logException( \Exception $e )
   {
-    $type = get_class( $e );
-    if($e instanceof \ErrorException) {
-      $class_parts = explode('\\', $type);
-      $type = array_pop($class_parts);
+    if($handler = ErrorHandler::getInstance()) {
+      $type = get_class($e);
+      if ($e instanceof \ErrorException) {
+        $class_parts = explode('\\', $type);
+        $type = array_pop($class_parts);
+      }
+      $line = [
+        date('Y-m-d H:i:s'),
+        $type,
+        json_encode($e->getMessage()),
+        $e->getFile(),
+        $e->getLine(),
+        json_encode($e->getTrace())
+      ];
+      $handler->file->fputcsv($line);
     }
-    $line = [date('Y-m-d H:i:s'), $type, json_encode($e->getMessage()), $e->getFile(), $e->getLine(), json_encode($e->getTrace())];
-    $this->file->fputcsv($line);
   }
 
   /**
@@ -104,27 +112,32 @@ class ErrorHandler {
     }
   }
 
-  public function getErrors($tail = 20) {
+  static function getErrors($tail = 20) {
     $rows = [];
-    $lines = [];
-    $path = escapeshellarg($this->error_file_path);
-    exec("tail -$tail $path", $lines);
-    foreach($lines AS $line) {
-      $row = str_getcsv($line);
-      $rows[] = [
-        'time' => $row[0],
-        'type' => $row[1],
-        'message' => json_decode($row[2], TRUE),
-        'file' => $row[3],
-        'line' => $row[4],
-        'trace' => !empty($row[5]) ? $row[5] : '',
-      ];
+    if($handler = ErrorHandler::getInstance()) {
+      $lines = [];
+      $path = escapeshellarg($handler->error_file_path);
+      exec("tail -$tail $path", $lines);
+      foreach ($lines AS $line) {
+        $row = str_getcsv($line);
+        $rows[] = [
+          'time' => $row[0],
+          'type' => $row[1],
+          'message' => json_decode($row[2], TRUE),
+          'file' => $row[3],
+          'line' => $row[4],
+          'trace' => !empty($row[5]) ? $row[5] : '',
+        ];
+      }
     }
+  
     return $rows;
   }
   
-  public function clearErrors() {
-    $this->file->ftruncate(0);
+  static function clearErrors() {
+    if($handler = ErrorHandler::getInstance()) {
+      $handler->file->ftruncate(0);
+    }
   }
   
 }

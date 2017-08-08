@@ -15,8 +15,29 @@ class ServiceManager {
    */
   static function service($name, $set = NULL) {
     if(isset($set)) {
-      static::$services[$name] = $set;
+      self::$services[$name] = $set;
     }
-    return !empty(static::$services[$name]) ? static::$services[$name] : NULL;
+    return !empty(self::$services[$name]) ? self::$services[$name] : NULL;
+  }
+  
+  /**
+   * @return \React\EventLoop\LoopInterface
+   */
+  static function loop() {
+    return self::service('loop');
+  }
+  
+  /**
+   * @return \Wapi\App
+   */
+  static function app() {
+    return self::service('app');
+  }
+  
+  /**
+   * @return \Wapi\ClientManager
+   */
+  static function clientManager() {
+    return self::service('client_manager');
   }
 }

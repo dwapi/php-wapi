@@ -14,6 +14,12 @@ class ClientManager {
     $this->clients = [];
   }
   
+  public function clientCreate(ConnectionInterface $conn)
+    /** @var \GuzzleHttp\Psr7\Request */{
+    $request = $conn->httpRequest;
+    return new Client($conn, $request);
+  }
+  
   public function clientAdd(Client $client = NULL) {
     if($client) {
       $this->clients[$client->id()] = $client;

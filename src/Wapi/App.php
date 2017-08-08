@@ -43,17 +43,17 @@ abstract class App implements MessageComponentInterface, AppInterface {
   public function onOpen(ConnectionInterface $conn) {
     /** @var LoopInterface $loop */
     $loop = ServiceManager::service('loop');
-    /** @var \GuzzleHttp\Psr7\Request */
-    $request = $conn->httpRequest;
-    $client = new Client($conn, $request);
     $client_manager =  $this->client_manager;
-    $client_manager->clientAdd($client);
+    $client = $client_manager->clientCreate($conn);
+    $this->client_manager->clientAdd($client);
     $loop->addTimer(2, function() use ($client, $client_manager){
       if(empty($client->persist)) {
         $client_manager->clientRemove($client);
       }
     });
   }
+  
+  
   
   public function onMessage(ConnectionInterface $from, $msg) {
     $client = $this->client_manager->getClientFromConn($from);
@@ -97,6 +97,6 @@ abstract class App implements MessageComponentInterface, AppInterface {
   public function onError(ConnectionInterface $conn, \Exception $e) {
     $client = $this->client_manager->getClientFromConn($conn);
     $this->client_manager->clientRemove($client);
-    ErrorHandler::getInstance()->logException($e);
+    ErrorHandler::logException($e);
   }
 }
