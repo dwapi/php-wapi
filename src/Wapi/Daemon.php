@@ -38,7 +38,7 @@ class Daemon {
     
     $wsStack = new HttpServer(
       new WsServer(
-        $this->app = new $app_class_name($loop, $id, $server_secret)
+        $this->app = new $app_class_name($loop, $id, $server_secret, $params)
       )
     );
     
