@@ -37,7 +37,7 @@ abstract class App implements MessageComponentInterface, AppInterface {
   }
   
   public function uptime() {
-    return time() - $this->start_time;
+    return microtime(TRUE) - $this->start_time;
   }
   
   public function onOpen(ConnectionInterface $conn) {
