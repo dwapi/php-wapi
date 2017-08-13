@@ -27,7 +27,7 @@ class Daemon {
     $host = !empty($params['host']) ? $params['host'] : '0.0.0.0';
     $port = !empty($params['port']) ? $params['port'] : 8080;
     $error_log_file = !empty($params['error-log-file']) ? $params['error-log-file'] : NULL;
-    $ssl_cert_file = !empty($params['ssl-cert-file']) ? $params['ssl-cert-file'] : 8080;
+    $ssl_cert_file = !empty($params['ssl-cert-file']) ? $params['ssl-cert-file'] : NULL;
     $ssl_port = !empty($params['ssl-port']) ? $params['ssl-port'] : 8443;
   
     if ($error_log_file) {
