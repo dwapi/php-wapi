@@ -24,11 +24,15 @@ class Daemon {
   public function __construct($params, $app_class_name = '\Wapi\App') {
     $server_secret = !empty($params['server-secret']) ? $params['server-secret'] : '';
     $id = !empty($params['id']) ? $params['id'] : 'default';
+    $access_mask = !empty($params['access-mask']) ? $params['access-mask'] : '0.0.0.0';
     $host = !empty($params['host']) ? $params['host'] : '0.0.0.0';
     $port = !empty($params['port']) ? $params['port'] : 8080;
     $error_log_file = !empty($params['error-log-file']) ? $params['error-log-file'] : NULL;
     $ssl_cert_file = !empty($params['ssl-cert-file']) ? $params['ssl-cert-file'] : NULL;
     $ssl_port = !empty($params['ssl-port']) ? $params['ssl-port'] : 8443;
+    $base_path = !empty($params['base-path']) ? $params['base-path'] : '';
+    
+    $params['address'] = $ssl_cert_file ? "wss://$host:$ssl_port$base_path" : "ws://$host:$port$base_path";
   
     if ($error_log_file) {
       ErrorHandler::init($error_log_file);
@@ -42,11 +46,11 @@ class Daemon {
       )
     );
     
-    $ws = new Server("$host:$port", $loop);
+    $ws = new Server("$access_mask:$port", $loop);
     $this->wsApp = new IoServer($wsStack, $ws, $loop);
     
     if($ssl_cert_file) {
-      $wss = new Server("$host:$ssl_port", $loop);
+      $wss = new Server("$access_mask:$ssl_port", $loop);
       $wss = new SecureServer($wss, $loop, ['local_cert' => $ssl_cert_file, 'verify_peer' => FALSE]);
       $this->wssApp = new IoServer($wsStack, $wss, $loop);
     }

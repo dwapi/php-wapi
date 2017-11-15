@@ -15,6 +15,11 @@ abstract class App implements MessageComponentInterface, AppInterface {
   public $server_secret;
   
   /**
+   * @var string
+   */
+  public $address;
+  
+  /**
    * @var float
    */
   public $start_time;
@@ -34,6 +39,7 @@ abstract class App implements MessageComponentInterface, AppInterface {
     $this->server_secret = $server_secret;
     $this->start_time = microtime(TRUE);
     $this->params = $params;
+    $this->address = $params['address'];
     ServiceManager::service('app', $this);
     ServiceManager::service('loop', $loop);
   }
