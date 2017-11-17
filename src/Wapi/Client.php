@@ -8,7 +8,7 @@ use Wapi\Protocol\Protocol;
 class Client {
   
   /**
-   * @var \SplObjectStorage
+   * @var ConnectionInterface
    */
   public $conn;
   
@@ -27,32 +27,41 @@ class Client {
    */
   public $persist = FALSE;
   
+  /**
+   * @var string[]
+   */
+  public $paths = [];
+  
   public function __construct(ConnectionInterface $conn, Request $request) {
-    $this->conn = new \SplObjectStorage();
-    $this->conn->attach($conn);
+    $this->conn = $conn;
     $this->request = $request;
     $this->last_access = time();
+  }
+  
+  public function getRequestPath() {
+    return $this->request->getUri()->getPath();
   }
   
   /**
    * @return string
    */
   public function id() {
-    return $this->conn->getHash($this->getConn());
+    return spl_object_hash($this->getConn());
   }
   
   /**
    * @return ConnectionInterface
    */
   public function getConn() {
-    foreach($this->conn as $conn) {
-      /** @var ConnectionInterface $conn */
-      return $conn;
-    }
+    return $this->conn;
   }
   
-  public function getPath() {
-    return $this->request->getUri()->getPath();
+  public function addPath($path) {
+    return $this->paths[$path] = $path;
+  }
+  
+  public function hasPath($path) {
+    return !empty($this->paths[$path]);
   }
   
   public function send($data) {

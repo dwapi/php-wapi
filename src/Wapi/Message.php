@@ -73,6 +73,10 @@ class Message {
     $this->check = !empty($body['check']) ? $body['check'] : NULL;
   }
   
+  public function get($key) {
+    return isset($this->original_message[$key]) ? $this->original_message[$key] : isset($this->$key) ? $this->$key : NULL;
+  }
+  
   public function verifyCheck($secret) {
     return $this->verifyTimestamp() && Protocol::verifyMessage($secret, $this->original_message);
   }

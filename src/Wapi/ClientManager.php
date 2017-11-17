@@ -15,7 +15,7 @@ class ClientManager {
   }
   
   public function clientCreate(ConnectionInterface $conn)
-    /** @var \GuzzleHttp\Psr7\Request */{
+    /** @var \GuzzleHttp\Psr7\Request $request */{
     $request = $conn->httpRequest;
     return new Client($conn, $request);
   }
@@ -35,15 +35,8 @@ class ClientManager {
   
   
   public function getClientFromConn(ConnectionInterface $conn) {
-    $client = NULL;
-    
-    foreach($this->clients AS $id => $existing_client) {
-      if($existing_client->conn->contains($conn)) {
-        $client = $existing_client;
-      }
-    }
-    
-    return $client;
+    $hash = spl_object_hash($conn);
+    return !empty($this->clients[$hash]) ? $this->clients[$hash] : NULL;
   }
   
 }
