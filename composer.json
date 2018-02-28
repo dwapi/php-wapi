@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "cboden/ratchet": "0.4-TLS as 0.4",
+        "cboden/ratchet": "dev-0.4-TLS as dev-master",
         "nyariv/wapi-protocol": "dev-master"
     },
     "license": "MIT",
