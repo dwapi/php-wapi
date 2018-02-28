@@ -3,12 +3,12 @@
     "description": "A PHP daemon factory for handling websocket communication based on ReactPHP and Ratchet.",
     "repositories": [
         {
-            "type": "git",
+            "type": "vcs",
             "url": "https://github.com/nyariv/Ratchet"
         }
     ],
     "require": {
-        "cboden/ratchet": "dev-0.4-TLS as 0.4",
+        "cboden/ratchet": "0.4-TLS as 0.4",
         "nyariv/wapi-protocol": "dev-master"
     },
     "license": "MIT",
