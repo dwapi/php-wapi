@@ -81,8 +81,16 @@ abstract class MessageHandlerBase implements MessageHandlerInterface {
         }
       }
       if($definition['type'] == 'assoc' && !empty($values[$property]) && !empty($definition['children'])) {
-        if($error = $this->validateSchema($definition['children'], $values[$property])) {
-          throw new ParametersInvalid($error . ": " . $property);
+        if($type === 'array') {
+          foreach($values[$property] AS $num => $value) {
+            if($error = $this->validateSchema($definition['children'], $value)) {
+              throw new ParametersInvalid($error . ": " . $property);
+            }
+          }
+        } else {
+          if($error = $this->validateSchema($definition['children'], $values[$property])) {
+            throw new ParametersInvalid($error . ": " . $property);
+          }
         }
       }
     }
@@ -102,7 +110,7 @@ abstract class MessageHandlerBase implements MessageHandlerInterface {
       return "Missing required property";
     }
     
-    $value = $parent[$property];
+    $value = isset($parent[$property]) ? $parent[$property] : NULL;
     
     if($value && !$type === 'any') {
       

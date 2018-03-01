@@ -74,7 +74,7 @@ class Message {
   }
   
   public function get($key) {
-    return isset($this->original_message[$key]) ? $this->original_message[$key] : isset($this->$key) ? $this->$key : NULL;
+    return isset($this->original_message[$key]) ? $this->original_message[$key] : (isset($this->$key) ? $this->$key : NULL);
   }
   
   public function verifyCheck($secret) {
