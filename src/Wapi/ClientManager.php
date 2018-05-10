@@ -27,9 +27,11 @@ class ClientManager {
   }
   
   public function clientRemove(Client $client = NULL) {
-    if($client && $existing_client = $this->clients[$client->id()]) {
+    $clients = $this->clients;
+    if($client && !empty($clients[$client->id()])) {
       $client->getConn()->close();
-      unset($this->clients[$client->id()]);
+      unset($clients[$client->id()]);
+      $this->clients = $clients;
     }
   }
   
