@@ -50,8 +50,15 @@ class Daemon {
     $this->wsApp = new IoServer($wsStack, $ws, $loop);
     
     if($ssl_cert_file) {
+      // $part[0] = cert.pem, $part[1] = key.pem
+      $parts = explode("|", $ssl_cert_file);
       $wss = new Server("$access_mask:$ssl_port", $loop);
-      $wss = new SecureServer($wss, $loop, ['local_cert' => $ssl_cert_file, 'verify_peer' => FALSE]);
+      $wss = new SecureServer($wss, $loop, [
+        'local_cert' => $parts[0], 
+        'local_pk' => $parts[1], 
+        'verify_peer' => FALSE, 
+        'verify_peer_name' => FALSE
+      ]);
       $this->wssApp = new IoServer($wsStack, $wss, $loop);
     }
   
